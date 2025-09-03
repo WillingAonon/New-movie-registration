@@ -37,7 +37,7 @@
 
 1.  **Clone the repository:**
     ```bash
-    git clone [YOUR_REPOSITORY_URL]
+    git clone https://github.com/WillingAonon/New-movie-registration.git
     ```
 2.  **Navigate to the project directory:**
     ```bash
@@ -86,6 +86,7 @@
 <details>
   <summary>
     ✅ <strong>Sprint 1: The Foundation</strong> - <small><i>เสร็จสิ้น: 2025-09-03</i></small>
+      https://colab.research.google.com/drive/1RGEzghPLigI5jZDLktuTpHwLDdwJ3u6z?usp=sharing
   </summary>
 
   <br>
@@ -94,3 +95,4 @@
   - **✨ ฟีเจอร์ที่ส่งมอบ:**
     -   โครงสร้างโปรแกรมหลักที่รันได้
     -   ระบบ
+    -   
