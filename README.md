@@ -45,7 +45,7 @@
     ```
 3.  **Run the application:**
     ```bash
-    python src/main.py
+    python New Movie Registration.py
     ```
     ...and the CLI is now running!
 
