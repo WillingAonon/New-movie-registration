@@ -86,7 +86,7 @@
 <details>
   <summary>
     ✅ <strong>Sprint 1: The Foundation</strong> - <small><i>เสร็จสิ้น: 2025-09-03</i></small>
-      https://colab.research.google.com/drive/1RGEzghPLigI5jZDLktuTpHwLDdwJ3u6z?usp=sharing
+
   </summary>
 
   <br>
@@ -95,4 +95,4 @@
   - **✨ ฟีเจอร์ที่ส่งมอบ:**
     -   โครงสร้างโปรแกรมหลักที่รันได้
     -   ระบบ
-    -   
+    -   colab บันทึก Sprint ที่ผ่านมาของพวกเรา https://colab.research.google.com/drive/1RGEzghPLigI5jZDLktuTpHwLDdwJ3u6z?usp=sharing
