@@ -90,9 +90,13 @@
   </summary>
 
   <br>
-  
-  - **🎯 เป้าหมายหลัก:** วางรากฐานที่มั่นคงให้กับแอปพลิเคชัน สร้าง Main Loop และฟังก์ชันหลัก (`add`, `view`, `quit`) ให้ทำงานได้จริง
-  - **✨ ฟีเจอร์ที่ส่งมอบ:**
-    -   โครงสร้างโปรแกรมหลักที่รันได้
-    -   ระบบ
-    -   colab บันทึก Sprint ที่ผ่านมาของพวกเรา https://colab.research.google.com/drive/1RGEzghPLigI5jZDLktuTpHwLDdwJ3u6z?usp=sharing
+    -   colab: https://colab.research.google.com/drive/1RGEzghPLigI5jZDLktuTpHwLDdwJ3u6z?usp=sharing
+<details>
+  <summary>
+    ✅ <strong>Sprint 1: The Foundation</strong> - <small><i>เสร็จสิ้น: 2025-09-03</i></small>
+
+  </summary>
+
+  <br>
+    -   colab: https://colab.research.google.com/drive/1RGEzghPLigI5jZDLktuTpHwLDdwJ3u6z?usp=sharing
+
