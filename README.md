@@ -85,18 +85,11 @@
 
 <details>
   <summary>
-    ✅ <strong>Sprint 1: The Foundation</strong> - <small><i>เสร็จสิ้น: 2025-09-03</i></small>
-
+    ✅ <strong>Sprint 1:  - colab: https://colab.research.google.com/drive/1RGEzghPLigI5jZDLktuTpHwLDdwJ3u6z?usp=sharing
+    ✅ <strong>Sprint 2:  - colab: https://colab.research.google.com/drive/1dLIIZpdkclgA2_gmWdY7rh9lKxXsNTK8?usp=sharing
   </summary>
 
   <br>
     -   colab: https://colab.research.google.com/drive/1RGEzghPLigI5jZDLktuTpHwLDdwJ3u6z?usp=sharing
-<details>
-  <summary>
-    ✅ <strong>Sprint 1: The Foundation</strong> - <small><i>เสร็จสิ้น: 2025-09-03</i></small>
 
-  </summary>
-
-  <br>
-    -   colab: https://colab.research.google.com/drive/1RGEzghPLigI5jZDLktuTpHwLDdwJ3u6z?usp=sharing
 
