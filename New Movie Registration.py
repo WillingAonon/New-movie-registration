@@ -1,33 +1,33 @@
 import json
 import os
 
-# Define the filename for storing movie data
+# ชื่อไฟล์สำหรับเก็บข้อมูลหนัง
 FILENAME = "movies.json"
 
 def load_movies():
-    """Loads movies from the JSON file if it exists."""
+    """โหลดข้อมูลหนังจากไฟล์ JSON ถ้ามี"""
     if not os.path.exists(FILENAME):
-        return []  # Return an empty list if the file doesn't exist yet
+        return []  # ถ้าไฟล์ยังไม่มี คืนลิสต์ว่าง
     
     try:
         with open(FILENAME, 'r', encoding='utf-8') as f:
-            # Handle empty file case
+            # กรณีไฟล์ว่าง
             content = f.read()
             if not content:
                 return []
             return json.loads(content)
     except (json.JSONDecodeError, FileNotFoundError):
-        # Handle cases where the file is empty or corrupted
+        # กรณีไฟล์เสียหายหรือไม่เจอ
         return []
 
 def save_movies(movies):
-    """Saves the entire movie list to the JSON file."""
+    """บันทึกข้อมูลหนังทั้งหมดลงไฟล์ JSON"""
     with open(FILENAME, 'w', encoding='utf-8') as f:
-        # Use indent=4 for a pretty, readable JSON file
+        # ใช้ indent=4 เพื่อให้อ่านง่าย
         json.dump(movies, f, indent=4)
 
 def run_movie_cli():
-    """Main function to run the Movie Registration CLI."""
+    """ฟังก์ชันหลักสำหรับรัน Movie Registration CLI"""
     movies = load_movies()
 
     print("--- Welcome to Movie Registration CLI ---")
@@ -36,7 +36,7 @@ def run_movie_cli():
     while True:
         command = input("\nEnter command: ").lower().strip()
 
-        # === 🚀 UPGRADE POINT 1: ADD COMMAND NOW ASKS FOR GENRE ===
+        # เพิ่ม genre ตอนเพิ่มหนัง
         if command == 'add':
             title = input("Enter movie title: ")
             
@@ -48,29 +48,25 @@ def run_movie_cli():
                 else:
                     print("Error: Invalid year. Please enter a number.")
             
-            # --- ADDED THIS LINE ---
             genre = input("Enter genre (e.g., Action, Comedy, Sci-Fi): ")
-            # ---------------------
-
-            # Add 'genre' to the new_movie dictionary
+            # สร้าง dictionary ของหนังใหม่
             new_movie = {'title': title, 'year': year, 'genre': genre}
             movies.append(new_movie)
             save_movies(movies)
             
             print(f"Success: '{title}' ({year}) - Genre: {genre} has been added.")
             
-        # === 🚀 UPGRADE POINT 2: VIEW COMMAND NOW SHOWS GENRE ===
+        # แสดงหนัง พร้อม genre
         elif command == 'view':
             print("\n--- Movie List ---")
             if not movies:
                 print("The movie list is empty.")
             else:
                 for index, movie in enumerate(movies, start=1):
-                    # Use .get() to avoid errors if old movies don't have a genre
                     genre = movie.get('genre', 'N/A') 
                     print(f"{index}. {movie['title']} ({movie['year']}) - Genre: {genre}")
         
-        # === 🚀 UPGRADE POINT 3: FIND COMMAND NOW SHOWS GENRE ===
+        # ค้นหาหนัง พร้อม genre
         elif command == 'find':
             search_title = input("Enter movie title to find: ")
             found_movies = [
@@ -86,6 +82,7 @@ def run_movie_cli():
                     genre = movie.get('genre', 'N/A')
                     print(f"- {movie['title']} ({movie['year']}) - Genre: {genre}")
 
+        # ลบหนัง
         elif command == 'delete':
             search_title = input("Enter the exact movie title to delete: ")
             
@@ -101,6 +98,7 @@ def run_movie_cli():
             else:
                 print(f"Error: Movie '{search_title}' not found.")
 
+        # ออกจากโปรแกรม
         elif command == 'quit':
             print("--- Thank you for using the service! ---")
             break
