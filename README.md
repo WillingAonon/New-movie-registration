@@ -85,11 +85,10 @@
 
 <details>
   <summary>
-    ✅ <strong>Sprint 1:  - colab: https://colab.research.google.com/drive/1RGEzghPLigI5jZDLktuTpHwLDdwJ3u6z?usp=sharing
-    ✅ <strong>Sprint 2:  - colab: https://colab.research.google.com/drive/1dLIIZpdkclgA2_gmWdY7rh9lKxXsNTK8?usp=sharing
+      ดู Sprint ที่ผ่านมาได้ที่นี่
   </summary>
 
   <br>
-    -   colab: https://colab.research.google.com/drive/1RGEzghPLigI5jZDLktuTpHwLDdwJ3u6z?usp=sharing
-
+    - Sprint 1 colab: https://colab.research.google.com/drive/1RGEzghPLigI5jZDLktuTpHwLDdwJ3u6z?usp=sharing
+    - Sprint 2 colab: https://colab.research.google.com/drive/1dLIIZpdkclgA2_gmWdY7rh9lKxXsNTK8?usp=sharing
 
