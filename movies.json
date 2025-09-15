@@ -1,12 +1,12 @@
 [
     {
-        "title": "A",
-        "year": 2000,
-        "genre": "Action"
+        "title": "Forrest Gump",
+        "year": 1994,
+        "genre": "Drama"
     },
     {
-        "title": "B",
-        "year": 2025,
-        "genre": "e.g."
+        "title": "The Godfather",
+        "year": 1972,
+        "genre": "Crime"
     }
 ]
