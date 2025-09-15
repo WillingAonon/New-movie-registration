@@ -90,7 +90,7 @@
 <details>
   <summary>ดู Sprint ที่ผ่านมาได้ที่นี่</summary>
     - Sprint1 --> https://colab.research.google.com/drive/1pVw00W_V8-Bh3_8rUnJChns-YXG9EFqb?usp=sharing  <br>
-    - Sprint2 --> https://colab.research.google.com/drive/1dLIIZpdkclgA2_gmWdY7rh9lKxXsNTK8?usp=sharing  <br>
+    - Sprint2 --> https://colab.research.google.com/drive/1aoVp1yv-fNoEJWYm3J1mohyGo_ZXyQU1?usp=sharing  <br>
     - Sprint3 -->
 
   </details>
