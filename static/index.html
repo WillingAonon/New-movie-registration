@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Movie Registration — Web GUI</title>
+  <style>
+    :root{--bg:#f7f8fb;--card:#ffffff;--muted:#6b7280;--accent:#2563eb}
+    *{box-sizing:border-box;font-family:Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial}
+    body{margin:0;background:var(--bg);color:#0f172a}
+    .wrap{max-width:980px;margin:28px auto;padding:20px}
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+    h1{font-size:20px;margin:0}
+    p.lead{margin:4px 0 0;color:var(--muted);font-size:13px}
+    .card{background:var(--card);padding:16px;border-radius:12px;box-shadow:0 6px 18px rgba(12,31,63,0.06);margin-bottom:14px}
+
+    form.grid{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    input[type=text], input[type=number]{padding:10px;border-radius:8px;border:1px solid #e6e9ef;min-width:0}
+    button{padding:10px 12px;border-radius:8px;border:0;background:var(--accent);color:#fff;cursor:pointer}
+    button.ghost{background:transparent;color:var(--accent);border:1px solid #dbeafe}
+
+    .controls{display:flex;gap:10px;align-items:center}
+    .controls input[type=file]{display:none}
+    label.file-btn{display:inline-block;padding:8px 10px;border-radius:8px;border:1px dashed #e6e9ef;cursor:pointer}
+
+    table{width:100%;border-collapse:collapse;margin-top:12px}
+    th,td{padding:10px 8px;text-align:left;border-bottom:1px solid #f1f5f9}
+    th{font-size:13px;color:var(--muted)}
+    td.actions{text-align:right}
+    .btn-delete{padding:6px 10px;border-radius:8px;border:0;background:#ef4444;color:#fff;cursor:pointer}
+
+    #message{min-height:36px;padding:8px 12px;border-radius:8px;margin-top:10px;display:flex;align-items:center}
+    .muted{color:var(--muted);font-size:13px}
+
+    @media (max-width:640px){
+      form.grid{flex-direction:column;align-items:stretch}
+      .controls{flex-direction:column;align-items:stretch}
+      td.actions{text-align:left}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Movie Registration — Web GUI</h1>
+        <p class="lead">อินเตอร์เฟสสำหรับดู / เพิ่ม / ลบ รายชื่อหนัง (เชื่อมต่อกับ Flask API ของคุณ)</p>
+      </div>
+      <div class="muted">Simple UI • ใช้งานร่วมกับ API ที่มีอยู่</div>
+    </header>
+
+    <section class="card">
+      <form id="addForm" class="grid">
+        <input id="title" type="text" placeholder="Title (ชื่อหนัง)" required />
+        <input id="year" type="text" placeholder="Year (ปี)" required maxlength="4" />
+        <input id="genre" type="text" placeholder="Genre (ประเภทหนัง)" required />
+        <input id="showtimes" type="text" placeholder="Showtimes (เช่น 13:00,16:30)" />
+        <button type="submit">เพิ่มหนัง</button>
+      </form>
+      <div id="message" style="margin-top:12px"></div>
+    </section>
+
+    <section class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+        <div style="display:flex;gap:8px;align-items:center">
+          <input id="filterInput" type="text" placeholder="ค้นหาชื่อ/ปี/ประเภท/รอบฉาย..." style="padding:8px;border-radius:8px;border:1px solid #e6e9ef" />
+          <button id="refreshBtn" class="ghost">รีเฟรช</button>
+        </div>
+
+        <div class="controls">
+          <button id="exportBtn" class="ghost">Export JSON</button>
+          <label class="file-btn" for="importInput">Import JSON</label>
+          <input id="importInput" type="file" accept=".json" />
+        </div>
+      </div>
+
+      <table id="moviesTable">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th style="width:100px">Year</th>
+            <th style="width:140px">Genre</th>
+            <th style="width:200px">Showtimes</th>
+            <th style="width:140px">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- rows injected by JS -->
+        </tbody>
+      </table>
+    </section>
+
+    <footer style="text-align:center;color:var(--muted);font-size:13px;margin-top:8px">Tip: ถ้ารันผ่าน Docker ให้เปิดที่ <code>http://localhost:5000/</code></footer>
+  </div>
+
+  <script>
+    let allMovies = [];
+
+    document.addEventListener('DOMContentLoaded', ()=>{
+      fetchMovies();
+      document.getElementById('addForm').addEventListener('submit', addMovie);
+      document.getElementById('filterInput').addEventListener('input', filterMovies);
+      document.getElementById('refreshBtn').addEventListener('click', fetchMovies);
+      document.getElementById('exportBtn').addEventListener('click', exportMovies);
+      document.getElementById('importInput').addEventListener('change', importMovies);
+    });
+
+    async function fetchMovies(){
+      try{
+        const res = await fetch('/movies');
+        if(!res.ok) throw new Error('ไม่สามารถโหลดรายชื่อหนังได้');
+        allMovies = await res.json();
+        renderMovies(allMovies);
+        showMessage(`พบ ${allMovies.length} รายการ`);
+      }catch(err){ showMessage(err.message, true); }
+    }
+
+    function renderMovies(movies){
+      const tbody = document.querySelector('#moviesTable tbody');
+      tbody.innerHTML = '';
+      if(!movies || movies.length === 0){
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#6b7280">ไม่มีข้อมูลหนัง</td></tr>';
+        return;
+      }
+
+      for(const movie of movies){
+        const tr = document.createElement('tr');
+        const tdTitle = document.createElement('td'); tdTitle.textContent = movie.title || '';
+        const tdYear = document.createElement('td'); tdYear.textContent = movie.year || '';
+        const tdGenre = document.createElement('td'); tdGenre.textContent = movie.genre || '';
+        const tdShowtimes = document.createElement('td'); tdShowtimes.textContent = (movie.showtimes || []).join(', ');
+        const tdActions = document.createElement('td'); tdActions.className = 'actions';
+
+        const delBtn = document.createElement('button');
+        delBtn.className = 'btn-delete';
+        delBtn.textContent = 'ลบ';
+        delBtn.onclick = ()=> deleteMovie(movie.title);
+
+        tdActions.appendChild(delBtn);
+        tr.appendChild(tdTitle); tr.appendChild(tdYear); tr.appendChild(tdGenre); tr.appendChild(tdShowtimes); tr.appendChild(tdActions);
+        tbody.appendChild(tr);
+      }
+    }
+
+    async function addMovie(e){
+      e.preventDefault();
+      const title = document.getElementById('title').value.trim();
+      const year = document.getElementById('year').value.trim();
+      const genre = document.getElementById('genre').value.trim();
+      const showtimesInput = document.getElementById('showtimes').value.trim();
+      const showtimes = showtimesInput ? showtimesInput.split(',').map(s=>s.trim()) : [];
+
+      if(!title || !year || !genre){ showMessage('กรุณากรอกชื่อ ปี และประเภทของหนัง', true); return; }
+      if(!/^\d{4}$/.test(year)) { showMessage('ปีต้องเป็นตัวเลข 4 หลัก เช่น 2024', true); return; }
+
+      try{
+        const res = await fetch('/movies',{
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ title, year, genre, showtimes })
+        });
+
+        if(res.status === 201){
+          showMessage('เพิ่มหนังเรียบร้อย');
+          document.getElementById('addForm').reset();
+          fetchMovies();
+        }else{
+          const data = await res.json();
+          showMessage(data.error || 'เกิดข้อผิดพลาด', true);
+        }
+      }catch(err){ showMessage(err.message, true); }
+    }
+
+    async function deleteMovie(title){
+      if(!confirm(`ต้องการลบ \"${title}\" ใช่หรือไม่?`)) return;
+      try{
+        const res = await fetch('/movies/' + encodeURIComponent(title), { method: 'DELETE' });
+        if(res.ok){ showMessage('ลบรายการเรียบร้อย'); fetchMovies(); }
+        else{ const data = await res.json(); showMessage(data.error || 'ไม่สามารถลบได้', true); }
+      }catch(err){ showMessage(err.message, true); }
+    }
+
+    function showMessage(text, isError=false){
+      const el = document.getElementById('message');
+      el.textContent = text || '';
+      el.style.background = isError ? '#fff1f2' : '#f0fdf4';
+      setTimeout(()=>{ el.textContent = ''; el.style.background = 'transparent'; }, 4200);
+    }
+
+    function filterMovies(e){
+      const q = (e.target.value || '').trim().toLowerCase();
+      if(!q) return renderMovies(allMovies);
+      const filtered = allMovies.filter(m => 
+        (m.title || '').toLowerCase().includes(q) ||
+        String(m.year || '').includes(q) ||
+        (m.genre || '').toLowerCase().includes(q) ||
+        (m.showtimes || []).join(',').toLowerCase().includes(q)
+      );
+      renderMovies(filtered);
+    }
+
+    async function exportMovies(){
+      try{
+        const res = await fetch('/movies');
+        if(!res.ok) throw new Error('ไม่สามารถโหลดข้อมูลเพื่อ export ได้');
+        const data = await res.json();
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href = url; a.download = 'movies.json'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+      }catch(err){ showMessage(err.message, true); }
+    }
+
+    async function importMovies(e){
+      const file = e.target.files[0];
+      if(!file) return;
+      try{
+        const txt = await file.text();
+        const arr = JSON.parse(txt);
+        if(!Array.isArray(arr)) throw new Error('ไฟล์ต้องเป็น JSON array ของวัตถุหนัง');
+        let added = 0;
+        for(const item of arr){
+          if(item && item.title && item.year && item.genre){
+            await fetch('/movies', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({
+              title: item.title, year: item.year, genre: item.genre, showtimes: item.showtimes || [] }) });
+            added++;
+          }
+        }
+        showMessage(`นำเข้า ${added} รายการเรียบร้อย`);
+        fetchMovies();
+      }catch(err){ showMessage(err.message, true); }
+      finally{ e.target.value = ''; }
+    }
+  </script>
+</body>
+</html>
