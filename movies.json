@@ -1,5 +1,14 @@
 [
   {
+    "title": "D",
+    "year": "4000",
+    "genre": "3",
+    "showtimes": [
+      "2:00",
+      "3:00"
+    ]
+  },
+  {
     "title": "A",
     "year": "1000",
     "genre": "Action",
@@ -8,11 +17,11 @@
     ]
   },
   {
-    "title": "B",
-    "year": "2000",
-    "genre": "1",
+    "title": "C",
+    "year": "3000",
+    "genre": "2",
     "showtimes": [
-      "0.00"
+      "1:00"
     ]
   }
 ]
