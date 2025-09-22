@@ -13,7 +13,7 @@ def load_movies():
     try:
         with open(FILENAME, "r", encoding="utf-8") as f:
             return json.load(f)
-    except json.JSONDecodeError:
+    except (json.JSONDecodeError, FileNotFoundError):
         return []
 
 
@@ -42,19 +42,32 @@ def add_movie():
         new_movie["showtimes"] = []
 
     movies = load_movies()
+    
+    # ตรวจสอบว่ามีหนังชื่อนี้อยู่แล้วหรือไม่ (ป้องกันการเพิ่มข้อมูลซ้ำ)
+    if any(movie['title'].lower() == new_movie['title'].lower() for movie in movies):
+        return jsonify({"error": f"Movie with title '{new_movie['title']}' already exists"}), 409
+
     movies.append(new_movie)
     save_movies(movies)
     return jsonify(new_movie), 201
 
 
-@app.route("/movies/<int:movie_id>", methods=["DELETE"])
-def delete_movie(movie_id):
+# --- ส่วนที่แก้ไข ---
+# เปลี่ยนจาก <int:movie_id> เป็น <string:title>
+@app.route("/movies/<string:title>", methods=["DELETE"])
+def delete_movie(title):
     movies = load_movies()
-    if 0 <= movie_id < len(movies):
-        deleted = movies.pop(movie_id)
+    
+    # ค้นหาหนังจาก 'title' แทนการใช้ index
+    movie_to_delete = next((movie for movie in movies if movie["title"] == title), None)
+    
+    if movie_to_delete:
+        movies.remove(movie_to_delete) # ลบหนังที่เจอออกจาก list
         save_movies(movies)
-        return jsonify(deleted)
+        return jsonify({"message": f"Movie '{title}' deleted successfully"}), 200
+    
     return jsonify({"error": "Movie not found"}), 404
+# --- สิ้นสุดส่วนที่แก้ไข ---
 
 
 if __name__ == "__main__":

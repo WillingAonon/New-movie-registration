@@ -1,18 +1,27 @@
 [
   {
-    "title": "A",
-    "year": "1000",
-    "genre": "Action",
+    "title": "ABCD",
+    "year": "2020",
+    "genre": "AC",
     "showtimes": [
-      "13:00"
+      "5:00"
     ]
   },
   {
-    "title": "B",
-    "year": "2000",
-    "genre": "1",
+    "title": "D",
+    "year": "4000",
+    "genre": "3",
     "showtimes": [
-      "0.00"
+      "2:00",
+      "3:00"
+    ]
+  },
+  {
+    "title": "dog",
+    "year": "3000",
+    "genre": "2",
+    "showtimes": [
+      "6:00"
     ]
   }
 ]
