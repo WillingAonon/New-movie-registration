@@ -1,5 +1,13 @@
 [
   {
+    "title": "ABCD",
+    "year": "2020",
+    "genre": "AC",
+    "showtimes": [
+      "5:00"
+    ]
+  },
+  {
     "title": "D",
     "year": "4000",
     "genre": "3",
@@ -9,19 +17,11 @@
     ]
   },
   {
-    "title": "A",
-    "year": "1000",
-    "genre": "Action",
-    "showtimes": [
-      "13:00"
-    ]
-  },
-  {
-    "title": "C",
+    "title": "dog",
     "year": "3000",
     "genre": "2",
     "showtimes": [
-      "1:00"
+      "6:00"
     ]
   }
 ]
